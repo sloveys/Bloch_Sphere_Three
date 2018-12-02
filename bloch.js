@@ -34,13 +34,13 @@ function genSphere() {
   for (var w = 0; w < txtrHW; w++) {
     for (var h = 0; h < txtrHW; h++) {
     	var stride = ((h * txtrHW) + w) * 4;
-    	txtrData[stride] = 255; // r; rgb is 0...255
-    	txtrData[stride + 1] = 255; // g
-      txtrData[stride + 2] = 255; // b
+    	txtrData[stride] = 255; // red
+    	txtrData[stride + 1] = 255; // green
+      txtrData[stride + 2] = 255; // blue
       if (w % 40 && h % 40) {
-        txtrData[stride + 3] = 0; // a
+        txtrData[stride + 3] = 0; // alfa; transparen
       } else {
-        txtrData[stride + 3] = 255; // a
+        txtrData[stride + 3] = 255; // alfa; opaque
       }
     }
   }
@@ -111,7 +111,7 @@ loader.load('three.js-master/examples/fonts/droid/droid_serif_regular.typeface.j
   scene.add(ket1);
 });
 
-var ambiLight = new THREE.AmbientLight(0xF0F0F0);
+var ambiLight = new THREE.AmbientLight(0xFFFFFF);
 scene.add(ambiLight);
 
 var states = [];
