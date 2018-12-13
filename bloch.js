@@ -28,7 +28,7 @@ camera.lookAt(new THREE.Vector3(0, 0, 0));
 controls.update();
 
 function genSphere() {
-  var txtrHW = 640;
+  var txtrHW = 360;
 
   var txtrData = new Uint8Array(4 * txtrHW * txtrHW);
   for (var w = 0; w < txtrHW; w++) {
@@ -37,7 +37,7 @@ function genSphere() {
     	txtrData[stride] = 255; // red
     	txtrData[stride + 1] = 255; // green
       txtrData[stride + 2] = 255; // blue
-      if (w % 40 && h % 40) {
+      if (w % 45 && h % 45) {
         txtrData[stride + 3] = 0; // alfa; transparen
       } else {
         txtrData[stride + 3] = 255; // alfa; opaque
