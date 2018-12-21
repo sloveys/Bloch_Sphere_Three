@@ -1,5 +1,5 @@
 var loader, scene, camera, renderer, controls,
-  sphere, xAxis, yAxis, zAxis, ket0, ket1, states;
+  ambiLight, sphere, xAxis, yAxis, zAxis, ket0, ket1, states;
 
 
 function init_bloch_sphere(containerName='Bloch Sphere') {
@@ -13,6 +13,9 @@ function init_bloch_sphere(containerName='Bloch Sphere') {
 
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x202020);
+
+  ambiLight = new THREE.AmbientLight(0xFFFFFF);
+  scene.add(ambiLight);
 
   camera = new THREE.PerspectiveCamera(viewAngle, window.innerWidth / window.innerHeight, nearClipping, farClipping);
 
@@ -56,16 +59,11 @@ function init_bloch_sphere(containerName='Bloch Sphere') {
     scene.add(ket1);
   });
 
-  var ambiLight = new THREE.AmbientLight(0xFFFFFF);
-  scene.add(ambiLight);
-
-  states = [];
-  addState(1, 1, 1, 0xFFFF00, "|a>");
-  addState(1, 0, -3, 0x00FFFF, "|b>");
-
   window.addEventListener('resize', onWindowResize, false);
 
-  animate();
+  states = [];
+
+  requestAnimationFrame(animate);
 }
 
 function animate() {
@@ -98,10 +96,10 @@ function genSphere() {
     	txtrData[stride] = 255; // red
     	txtrData[stride + 1] = 255; // green
       txtrData[stride + 2] = 255; // blue
-      if (w % 45 && h % 45) {
-        txtrData[stride + 3] = 0; // alfa; transparen
-      } else {
+      if (w % 45 == 0 || h % 45 == 0) {
         txtrData[stride + 3] = 255; // alfa; opaque
+      } else {
+        txtrData[stride + 3] = 0; // alfa; transparen
       }
     }
   }
@@ -129,7 +127,6 @@ function genLine(position, lineColor, name) {
   lineGeometry.vertices.push(new THREE.Vector3(0, 0, 0));
   lineGeometry.vertices.push(position);
   var line = new THREE.Line(lineGeometry, lineMaterial);
-  scene.add(line);
 
   line.stateName = null;
   line.name = name;
@@ -142,8 +139,10 @@ function genLine(position, lineColor, name) {
     line.stateName = new THREE.Mesh(nameGeometry, nameMaterial);
     line.stateName.position.set(position.x, position.y, position.z);
     line.stateName.position.multiplyScalar(0.7);
-    scene.add(line.stateName);
+    line.add(line.stateName);
   });
+
+  scene.add(line);
 
   return line;
 }
@@ -154,13 +153,12 @@ function addState(x, y, z, color, name) {
   states.push(genLine(vec, color, name));
 }
 
-/*function removeState(name) {
+function removeState(name) {
   for (var i=0; i<states.length; i++) {
     if (states[i].name == name) {
-      scene.remove(states[i].stateName);
       scene.remove(states[i]);
       states.splice(i, 1);
       break;
     }
   }
-}*/
+}

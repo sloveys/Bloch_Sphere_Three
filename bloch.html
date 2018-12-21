@@ -16,8 +16,14 @@
     </style>
 	</head>
   <body>
+		<button onclick="removeState('|b>');addState(0, -1, -1, 0x00FFFF, '|b>');" style="position: absolute;">Move |b></button>
 		<div id="Bloch Sphere"></div>
 		<script src="bloch.js"></script>
-		<script> init_bloch_sphere(); </script>
+		<script>
+			init_bloch_sphere();
+
+		  addState(1, 1, 1, 0xFFFF00, '|a>');
+		  addState(1, 0, -3, 0x00FFFF, '|b>');
+		</script>
   </body>
 </html>
