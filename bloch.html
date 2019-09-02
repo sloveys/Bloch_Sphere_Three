@@ -3,8 +3,8 @@
 	<head>
 		<meta charset=utf-8>
 		<title>Bloch Sphere Three</title>
-		<script src="three.js-master\build\three.js"></script>
-		<script src="three.js-master\examples\js\controls\OrbitControls.js"></script>
+		<script src="assets/three.js"></script>
+		<script src="assets/OrbitControls.js"></script>
 		<style>
         body {
 					font-family: Monospace;
@@ -13,17 +13,18 @@
 					margin: 0px;
 					overflow: hidden;
 				}
+				canvas { width: 100%; height: 100% }
     </style>
 	</head>
   <body>
-		<button onclick="removeState('|b>');addState(0, -1, -1, 0x00FFFF, '|b>');" style="position: absolute;">Move |b></button>
-		<div id="Bloch Sphere"></div>
+		<!--button onclick="removeState('|b>');addState(0, -1, -1, 0x00FFFF, '|b>');" style="position: absolute;">Move |b></button-->
+		<!--div id="Bloch Sphere"></div-->
 		<script src="bloch.js"></script>
 		<script>
 			init_bloch_sphere();
 
-		  addState(1, 1, 1, 0xFFFF00, '|a>');
-		  addState(1, 0, -3, 0x00FFFF, '|b>');
+			addState(-1,0,0, 0xFFFF44, '|a>');
+			addState(1,1,0.5, 0x44FFFF, '|b>');
 		</script>
   </body>
 </html>

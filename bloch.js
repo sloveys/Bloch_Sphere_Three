@@ -7,9 +7,10 @@ function init_bloch_sphere(containerName='Bloch Sphere') {
   var nearClipping = 0.1;
   var farClipping = 1000;
 
-  var container = document.getElementById(containerName);
+  //var container = document.getElementById(containerName);
 
   loader = new THREE.FontLoader();
+
 
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x202020);
@@ -22,7 +23,8 @@ function init_bloch_sphere(containerName='Bloch Sphere') {
   renderer = new THREE.WebGLRenderer({antialias: true});
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-  container.appendChild(renderer.domElement);
+  document.body.appendChild( renderer.domElement );
+  //container.appendChild(renderer.domElement);
 
   controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enablePan = false;
@@ -37,27 +39,30 @@ function init_bloch_sphere(containerName='Bloch Sphere') {
 
   sphere = genSphere();
 
+  loader.load("assets/droid_serif_regular.typeface.json",
+    function (font) {
+      var ket0Geometry = new THREE.TextGeometry('|0>', {
+        font: font,
+        size: 0.1,
+        height: 0.01 });
+      var ket1Geometry = new THREE.TextGeometry('|1>', {
+        font: font,
+        size: 0.1,
+        height: 0.01 });
+      var ketMaterial = new THREE.MeshPhongMaterial({color: 0xFFFFFF});
+      ket0 = new THREE.Mesh(ket0Geometry, ketMaterial);
+      ket0.position.set(0, 1.1, 0);
+      scene.add(ket0);
+      ket1 = new THREE.Mesh(ket1Geometry, ketMaterial);
+      ket1.position.set(0, -1.2, 0);
+      scene.add(ket1);
+    }, null, function(err) {
+      console.log( err );
+    });
   xAxis = genLine(new THREE.Vector3(1, 0, 0), 0x44FF44, 'x');
   yAxis = genLine(new THREE.Vector3(0, 0, 1), 0xFF4444, 'y');
   zAxis = genLine(new THREE.Vector3(0, 1, 0), 0x4444FF, 'z');
 
-  loader.load('three.js-master/examples/fonts/droid/droid_serif_regular.typeface.json', function (font) {
-    var ket0Geometry = new THREE.TextGeometry('|0>', {
-      font: font,
-      size: 0.1,
-      height: 0.01 });
-    var ket1Geometry = new THREE.TextGeometry('|1>', {
-      font: font,
-      size: 0.1,
-      height: 0.01 });
-    var ketMaterial = new THREE.MeshPhongMaterial({color: 0xFFFFFF});
-    ket0 = new THREE.Mesh(ket0Geometry, ketMaterial);
-    ket0.position.set(0, 1.1, 0);
-    scene.add(ket0);
-    ket1 = new THREE.Mesh(ket1Geometry, ketMaterial);
-    ket1.position.set(0, -1.2, 0);
-    scene.add(ket1);
-  });
 
   window.addEventListener('resize', onWindowResize, false);
 
@@ -130,17 +135,21 @@ function genLine(position, lineColor, name) {
 
   line.stateName = null;
   line.name = name;
-  loader.load('three.js-master/examples/fonts/droid/droid_serif_regular.typeface.json', function (font) {
-    var nameGeometry = new THREE.TextGeometry(name, {
-      font: font,
-      size: 0.1,
-      height: 0.01 });
-    var nameMaterial = new THREE.MeshPhongMaterial({color: lineColor});
-    line.stateName = new THREE.Mesh(nameGeometry, nameMaterial);
-    line.stateName.position.set(position.x, position.y, position.z);
-    line.stateName.position.multiplyScalar(0.7);
-    line.add(line.stateName);
-  });
+  loader.load("assets/droid_serif_regular.typeface.json",
+    function (font) {
+      var nameGeometry = new THREE.TextGeometry(name, {
+        font: font,
+        size: 0.1,
+        height: 0.01 });
+      var nameMaterial = new THREE.MeshPhongMaterial({color: lineColor});
+      line.stateName = new THREE.Mesh(nameGeometry, nameMaterial);
+      line.stateName.position.set(position.x, position.y, position.z);
+      line.stateName.position.multiplyScalar(0.7);
+      scene.add(line.stateName);
+    }, null, function(err) {
+      console.log( err );
+    });
+
 
   scene.add(line);
 
